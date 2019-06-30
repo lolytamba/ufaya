@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->integer('No_Telp');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('Id_Role')->references('Id_Role')->on('roles');
         });
     }
 

@@ -17,7 +17,7 @@ class CreateDetailBahanPenolongsTable extends Migration
             $table->bigIncrements('Id_Detail_BP');
             $table->unsignedInteger('Id_Bahan_Penolong');
             $table->unsignedInteger('Id_Detail_Aktivitas');
-            $table->int('Jumlah',10);
+            $table->integer('Jumlah',10);
             $table->double('Total',10);
             $table->timestamps();
 
