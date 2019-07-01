@@ -26,4 +26,9 @@ class DetailAktivitas extends Model
     {
         return $this->belongsTo('App\Overhead','Id_Overhead');
     }
+
+    public function bahan_penolong()
+    {
+        return $this->hasMany('App\BahanPenolong','Id_Bahan_Penolong');
+    }
 }

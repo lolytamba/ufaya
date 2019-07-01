@@ -19,4 +19,9 @@ class Overhead extends Model
     {
         return $this->hasMany('App\DetailOverhead','Id_Detail_Overhead');
     }
+
+    public function detail_aktivitas()
+    {
+        return $this->hasMany('App\DetailAktivitas','Id_Detail_Aktivitas');
+    }
 }
