@@ -14,11 +14,11 @@ class CreateDetailOverheadsTable extends Migration
     public function up()
     {
         Schema::create('detail_overhead', function (Blueprint $table) {
-            $table->bigIncrements('Id_Detail_Overhead');
+            $table->increments('Id_Detail_Overhead');
             $table->unsignedInteger('Id_Overhead');
             $table->string('Nama_Detail_Overhead',50);
             $table->double('Harga_Detail_Overhead',50);
-            $table->int('Jumlah',10);
+            $table->integer('Jumlah');
             $table->double('Total',10);
             $table->timestamps();
 

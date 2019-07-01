@@ -14,10 +14,10 @@ class CreateDetailBahanPenolongsTable extends Migration
     public function up()
     {
         Schema::create('detail_bp', function (Blueprint $table) {
-            $table->bigIncrements('Id_Detail_BP');
+            $table->increments('Id_Detail_BP');
             $table->unsignedInteger('Id_Bahan_Penolong');
             $table->unsignedInteger('Id_Detail_Aktivitas');
-            $table->integer('Jumlah',10);
+            $table->integer('Jumlah');
             $table->double('Total',10);
             $table->timestamps();
 

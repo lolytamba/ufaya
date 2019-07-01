@@ -14,7 +14,7 @@ class CreateDetailAktivitasTable extends Migration
     public function up()
     {
         Schema::create('detail_aktivitas', function (Blueprint $table) {
-            $table->bigIncrements('Id_Detail_Aktivitas');
+            $table->increments('Id_Detail_Aktivitas');
             $table->unsignedInteger('Id_Overhead');
             $table->unsignedInteger('Id_Aktivitas');
             $table->double('Total');

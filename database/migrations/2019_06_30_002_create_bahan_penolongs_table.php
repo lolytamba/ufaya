@@ -14,7 +14,7 @@ class CreateBahanPenolongsTable extends Migration
     public function up()
     {
         Schema::create('bahan_penolong', function (Blueprint $table) {
-            $table->bigIncrements('Id_Bahan_Penolong');
+            $table->increments('Id_Bahan_Penolong');
             $table->string('Nama',50);
             $table->double('Harga');
             $table->timestamps();

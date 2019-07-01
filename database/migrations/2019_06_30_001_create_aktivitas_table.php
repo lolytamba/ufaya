@@ -14,7 +14,7 @@ class CreateAktivitasTable extends Migration
     public function up()
     {
         Schema::create('aktivitas', function (Blueprint $table) {
-            $table->bigIncrements('Id_Aktivitas');
+            $table->increments('Id_Aktivitas');
             $table->string('Nama',50);
             $table->double('Total');
             $table->timestamps();

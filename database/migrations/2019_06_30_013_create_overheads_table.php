@@ -13,8 +13,8 @@ class CreateOverheadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('overheads', function (Blueprint $table) {
-            $table->bigIncrements('Id_Overhead');
+        Schema::create('overhead', function (Blueprint $table) {
+            $table->increments('Id_Overhead');
             $table->unsignedInteger('Id_Pemesanan');
             $table->double('Total',20);
             $table->timestamps();

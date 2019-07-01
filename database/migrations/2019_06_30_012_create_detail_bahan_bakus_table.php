@@ -14,7 +14,7 @@ class CreateDetailBahanBakusTable extends Migration
     public function up()
     {
         Schema::create('detail_bahan_baku', function (Blueprint $table) {
-            $table->bigIncrements('Id_Detail_Bahan_Baku');
+            $table->increments('Id_Detail_Bahan_Baku');
             $table->unsignedInteger('Id_Bahan_Baku');
             $table->unsignedInteger('Id_Pemesanan');
             $table->integer('Jumlah');

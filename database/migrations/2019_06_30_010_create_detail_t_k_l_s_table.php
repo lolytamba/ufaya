@@ -14,7 +14,7 @@ class CreateDetailTKLSTable extends Migration
     public function up()
     {
         Schema::create('detail_tkl', function (Blueprint $table) {
-            $table->bigIncrements('Id_Detail_TKL');
+            $table->increments('Id_Detail_TKL');
             $table->unsignedInteger('Id_TKL');
             $table->unsignedInteger('Id_Pemesanan');
             $table->double('Total',50);

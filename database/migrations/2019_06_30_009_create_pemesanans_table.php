@@ -14,7 +14,7 @@ class CreatePemesanansTable extends Migration
     public function up()
     {
         Schema::create('pemesanan', function (Blueprint $table) {
-            $table->bigIncrements('Id_Pemesanan');
+            $table->increments('Id_Pemesanan');
             $table->unsignedInteger('Id_Konsumen');
             $table->string('Nama_Produk',50);
             $table->date('Tanggal');

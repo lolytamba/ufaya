@@ -14,9 +14,9 @@ class CreateTKLSTable extends Migration
     public function up()
     {
         Schema::create('tkl', function (Blueprint $table) {
-            $table->bigIncrements('Id_TKL');
+            $table->increments('Id_TKL');
             $table->string('Nama_TKL',50);
-            $table->integer('No_Telp',50);
+            $table->string('No_Telp',50);
             $table->string('Alamat_TKL',50);
             $table->double('Salary',20);
             $table->timestamps();
