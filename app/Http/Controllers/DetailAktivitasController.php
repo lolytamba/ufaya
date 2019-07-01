@@ -4,82 +4,66 @@ namespace App\Http\Controllers;
 
 use App\DetailAktivitas;
 use Illuminate\Http\Request;
+use App\Transformers\DetailAktivitasTransformers;
 
-class DetailAktivitasController extends Controller
+class DetailAktivitasController extends RestController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $transformer=DetailAktivitasTransformers::Class;
+
     public function index()
     {
-        //
+        $detail_aktivitas=DetailAktivitas::get();
+        $response=$this->generateCollection($detail_aktivitas);
+        return $this->sendResponse($response,201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $detail_aktivitas = DetailAktivitas::create([
+            'Id_Bahan_Baku' => $request->Id_Bahan_Baku,
+            'Id_Pemesanan' => $request->Id_Pemesanan,
+            'Jumlah' => $request->Jumlah,
+            'Total' => $request->Total
+        ]);
+
+        return response()->json([
+            'status' => (bool) $detail_aktivitas,
+            'data' => $detail_aktivitas,
+            'message' => $detail_aktivitas ? 'Success' : 'Error Detail Aktivitas'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\DetailAktivitas  $detailAktivitas
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DetailAktivitas $detailAktivitas)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $detail_aktivitas = DetailBahanBaku::find($id);
+
+        if(!is_null($request->Id_Overhead)){
+            $detail_aktivitas->Id_Overhead = $request->Id_Overhead;
+        }
+        if(!is_null($request->Id_Aktivitas)){
+            $detail_aktivitas->Id_Aktivitas = $request->Id_Aktivitas;
+        }
+
+        $success = $detail_aktivitas->save();
+        if(!$success){
+            return response()->json('Error Update',500);
+        }else   
+            return response()->json('Success',200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\DetailAktivitas  $detailAktivitas
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DetailAktivitas $detailAktivitas)
+    public function showbyID($id)
     {
-        //
+        $detail_aktivitas = DetailAktivitas::find($id);
+        return response()->json($detail_aktivitas,200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\DetailAktivitas  $detailAktivitas
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, DetailAktivitas $detailAktivitas)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\DetailAktivitas  $detailAktivitas
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DetailAktivitas $detailAktivitas)
-    {
-        //
+        $detail_aktivitas = DetailAktivitas::find($id);
+        $status = $detail_aktivitas->delete();
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Deleted' : 'Error Delete'
+        ]);
     }
 }

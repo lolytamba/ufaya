@@ -4,82 +4,70 @@ namespace App\Http\Controllers;
 
 use App\DetailOverhead;
 use Illuminate\Http\Request;
+use App\Transformers\DetailOverheadTransformers;
 
-class DetailOverheadController extends Controller
+class DetailOverheadController extends RestController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $transformer=DetailOverheadTransformers::Class;
+
     public function index()
     {
-        //
+        $detail_overhead=DetailOverhead::get();
+        $response=$this->generateCollection($detail_overhead);
+        return $this->sendResponse($response,201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $detail_overhead = DetailOverhead::create([
+            'Nama_Detail_Overhead' => $request->Nama_Detail_Overhead,
+            'Harga_Detail_Overhead' => $request->Harga_Detail_Overhead,
+            'Jumlah' => $request->Jumlah,
+            'Total' => $request->Total
+        ]);
+
+        return response()->json([
+            'status' => (bool) $detail_overhead,
+            'data' => $detail_overhead,
+            'message' => $detail_overhead ? 'Success' : 'Error Detail Overhead'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\DetailOverhead  $detailOverhead
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DetailOverhead $detailOverhead)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $detail_overhead = DetailOverhead::find($id);
+
+        if(!is_null($request->Id_Overhead)){
+            $detail_overhead->Id_Overhead = $request->Id_Overhead;
+        }
+        if(!is_null($request->Nama_Detail_Overhead)){
+            $detail_overhead->Nama_Detail_Overhead = $request->Nama_Detail_Overhead;
+        }
+        if(!is_null($request->Harga_Detail_Overhead)){
+            $detail_overhead->Harga_Detail_Overhead = $request->Harga_Detail_Overhead;
+        }if(!is_null($request->Jumlah)){
+            $detail_overhead->Jumlah = $request->Jumlah;
+        }
+        $success = $detail_overhead->save();
+        if(!$success){
+            return response()->json('Error Update',500);
+        }else   
+            return response()->json('Success',200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\DetailOverhead  $detailOverhead
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DetailOverhead $detailOverhead)
+    public function showbyID($id)
     {
-        //
+        $detail_overhead = DetailTKL::find($id);
+        return response()->json($detail_overhead,200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\DetailOverhead  $detailOverhead
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, DetailOverhead $detailOverhead)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\DetailOverhead  $detailOverhead
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DetailOverhead $detailOverhead)
-    {
-        //
+        $detail_overhead = DetailOverhead::find($id);
+        $status = $detail_overhead->delete();
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Deleted' : 'Error Delete'
+        ]);
     }
 }

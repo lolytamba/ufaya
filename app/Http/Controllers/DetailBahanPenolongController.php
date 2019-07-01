@@ -4,82 +4,66 @@ namespace App\Http\Controllers;
 
 use App\DetailBahanPenolong;
 use Illuminate\Http\Request;
+use App\Transformers\DetailBahanPenolongTransformers;
 
-class DetailBahanPenolongController extends Controller
+class DetailBahanPenolongController extends RestController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $transformer=DetailBahanPenolongTransformers::Class;
+
     public function index()
     {
-        //
+        $detail_bahan_penolong=DetailAktivitas::get();
+        $response=$this->generateCollection($detail_bahan_penolong);
+        return $this->sendResponse($response,201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $detail_bahan_penolong = DetailBahanPenolong::create([
+            'Id_Bahan_Penolong' => $request->Id_Bahan_Penolong,
+            'Id_Detail_Aktivitas' => $request->Id_Detail_Aktivitas,
+            'Jumlah' => $request->Jumlah,
+            'Total' => $request->Total
+        ]);
+
+        return response()->json([
+            'status' => (bool) $detail_bahan_penolong,
+            'data' => $detail_bahan_penolong,
+            'message' => $detail_bahan_penolong ? 'Success' : 'Error Detail Bahan Penolong'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\DetailBahanPenolong  $detailBahanPenolong
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DetailBahanPenolong $detailBahanPenolong)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $detail_bahan_penolong = DetailBahanPenolong::find($id);
+
+        if(!is_null($request->Id_Bahan_Penolong)){
+            $detail_bahan_penolong->Id_Bahan_Penolong = $request->Id_Bahan_Penolong;
+        }
+        if(!is_null($request->Id_Detail_Aktivitas)){
+            $detail_bahan_penolong->Id_Detail_Aktivitas = $request->Id_Detail_Aktivitas;
+        }
+
+        $success = $detail_bahan_penolong->save();
+        if(!$success){
+            return response()->json('Error Update',500);
+        }else   
+            return response()->json('Success',200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\DetailBahanPenolong  $detailBahanPenolong
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DetailBahanPenolong $detailBahanPenolong)
+    public function showbyID($id)
     {
-        //
+        $detail_bahan_penolong = DetailBahanPenolong::find($id);
+        return response()->json($detail_bahan_penolong,200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\DetailBahanPenolong  $detailBahanPenolong
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, DetailBahanPenolong $detailBahanPenolong)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\DetailBahanPenolong  $detailBahanPenolong
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DetailBahanPenolong $detailBahanPenolong)
-    {
-        //
+        $detail_bahan_penolong = DetailBahanPenolong::find($id);
+        $status = $detail_bahan_penolong->delete();
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Deleted' : 'Error Delete'
+        ]);
     }
 }

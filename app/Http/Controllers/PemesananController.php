@@ -4,82 +4,77 @@ namespace App\Http\Controllers;
 
 use App\Pemesanan;
 use Illuminate\Http\Request;
+use App\Transformers\PemesananTransformers;
 
-class PemesananController extends Controller
+class PemesananController extends RestController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $transformer=PemesananTransformers::Class;
+
     public function index()
     {
-        //
+        $pemesanan=Pemesanan::get();
+        $response=$this->generateCollection($pemesanan);
+        return $this->sendResponse($response,201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $pemesanan = Pemesanan::create([
+            'Id_Konsumen' => $request->Id_Konsumen,
+            'Nama_Produk' => $request->Nama_Produk,
+            'Tanggal' => $request->Tanggal,
+            'Tanggal_Selesai' => $request->Tanggal_Selesai,
+            'Lama_Kerja' => $request->Lama_Kerja,
+            'Jumlah' => $request->Jumlah,
+            'Total' => $request->Total
+        ]);
+
+        return response()->json([
+            'status' => (bool) $pemesanan,
+            'data' => $pemesanan,
+            'message' => $pemesanan ? 'Success' : 'Error Pemesanan'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Pemesanan  $pemesanan
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pemesanan $pemesanan)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $pemesanan = DetailOverhead::find($id);
+
+        if(!is_null($request->Id_Konsumen)){
+            $pemesanan->Id_Konsumen = $request->Id_Konsumen;
+        }
+        if(!is_null($request->Nama_Produk)){
+            $pemesanan->Nama_Produk = $request->Nama_Produk;
+        }
+        if(!is_null($request->Tanggal)){
+            $pemesanan->Tanggal = $request->Tanggal;
+        }if(!is_null($request->Tanggal_Selesai)){
+            $pemesanan->Tanggal_Selesai = $request->Tanggal_Selesai;
+        }if(!is_null($request->Lama_Kerja)){
+            $pemesanan->Lama_Kerja = $request->Lama_Kerja;
+        }if(!is_null($request->Jumlah)){
+            $pemesanan->Jumlah = $request->Jumlah;
+        }
+        $success = $pemesanan->save();
+        if(!$success){
+            return response()->json('Error Update',500);
+        }else   
+            return response()->json('Success',200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Pemesanan  $pemesanan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pemesanan $pemesanan)
+    public function showbyID($id)
     {
-        //
+        $pemesanan = DetailTKL::find($id);
+        return response()->json($pemesanan,200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Pemesanan  $pemesanan
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Pemesanan $pemesanan)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Pemesanan  $pemesanan
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Pemesanan $pemesanan)
-    {
-        //
+        $pemesanan = Pemesanan::find($id);
+        $status = $pemesanan->delete();
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Deleted' : 'Error Delete'
+        ]);
     }
 }

@@ -4,82 +4,65 @@ namespace App\Http\Controllers;
 
 use App\DetailTKTL;
 use Illuminate\Http\Request;
+use App\Transformers\DetailTKTLTransformers;
 
-class DetailTKTLController extends Controller
+class DetailTKTLController extends RestController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $transformer=DetailBahanTKTLTransformers::Class;
+
     public function index()
     {
-        //
+        $detail_tktl=DetailTKTL::get();
+        $response=$this->generateCollection($detail_tktl);
+        return $this->sendResponse($response,201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $detail_tktl = DetailTKL::create([
+            'Id_User' => $request->Id_User,
+            'Id_Pemesanan' => $request->Id_Pemesanan,
+            'Total' => $request->Total
+        ]);
+
+        return response()->json([
+            'status' => (bool) $detail_tkl,
+            'data' => $detail_tkl,
+            'message' => $detail_tkl ? 'Success' : 'Error Detail TKTL'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\DetailTKTL  $detailTKTL
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DetailTKTL $detailTKTL)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $detail_tktl = DetailTKTL::find($id);
+
+        if(!is_null($request->Id_User)){
+            $detail_tktl->Id_User = $request->Id_User;
+        }
+        if(!is_null($request->Id_Pemesanan)){
+            $detail_tktl->Id_Pemesanan = $request->Id_Pemesanan;
+        }
+        
+        $success = $detail_tktl->save();
+        if(!$success){
+            return response()->json('Error Update',500);
+        }else   
+            return response()->json('Success',200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\DetailTKTL  $detailTKTL
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DetailTKTL $detailTKTL)
+    public function showbyID($id)
     {
-        //
+        $detail_tktl = DetailTKTL::find($id);
+        return response()->json($detail_tkTl,200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\DetailTKTL  $detailTKTL
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, DetailTKTL $detailTKTL)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\DetailTKTL  $detailTKTL
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DetailTKTL $detailTKTL)
-    {
-        //
+        $detail_tktl = DetailTKTL::find($id);
+        $status = $detail_tktl->delete();
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Deleted' : 'Error Delete'
+        ]);
     }
 }
