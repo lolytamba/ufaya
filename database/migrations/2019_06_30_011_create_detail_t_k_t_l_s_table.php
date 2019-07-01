@@ -20,9 +20,8 @@ class CreateDetailTKTLSTable extends Migration
             $table->double('Total',20);
             $table->timestamps();
 
-            $table->foreign('Id_User')->references('Id_User')->on('users');
             $table->foreign('Id_Pemesanan')->references('Id_Pemesanan')->on('pemesanan');
-            
+            $table->foreign('Id_User')->references('Id_User')->on('user');
         });
     }
 

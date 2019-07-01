@@ -21,4 +21,9 @@ class DetailTKL extends Model
     {
         return $this->belongsTo('App\TKL','Id_TKL');
     }
+
+    public function pemesanan()
+    {
+        return $this->belongsTo('App\Pemesanan','Id_Pemesanan');
+    }
 }

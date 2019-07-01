@@ -25,7 +25,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
 
             $table->foreign('Id_Role')->references('Id_Role')->on('role');
-            // $table->foreign('Id_Supplier')->references('Id_Supplier')->on('suppliers');
         });
     }
 

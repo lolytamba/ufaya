@@ -11,7 +11,7 @@ class Role extends Model
     const produksi   = 2;
     const finance    = 3;
 
-    protected $table = 'roles';
+    protected $table = 'role';
     protected $primaryKey = 'Id_Role'; 
     public $timestamp = true;
     protected $fillable = [

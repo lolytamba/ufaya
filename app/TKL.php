@@ -16,4 +16,9 @@ class TKL extends Model
         'Alamat_TKL',
         'Salary'
     ];
+
+    public function detail_tkl()
+    {
+        return $this->hasMany('App\DetailTKL','Id_Detail_TKL');
+    }
 }

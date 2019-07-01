@@ -22,4 +22,9 @@ class DetailBahanPenolong extends Model
     {
         return $this->belongsTo('App\BahanPenolong','Id_Bahan_Penolong');
     }
+
+    public function detail_aktivitas()
+    {
+        return $this->belongsTo('App\DetailAktivitas','Id_Detail_Aktivitas');
+    }
 }

@@ -19,7 +19,7 @@ class User extends Model
         'Salary'
     ];
 
-    public function roles()
+    public function role()
     {
         return $this->belongsTo('App\Role','Id_Role');
     }

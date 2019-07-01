@@ -16,4 +16,9 @@ class Konsumen extends Model
         'Alamat',
         'Jenis_Kelamin'
     ];
+
+    public function konsumen()
+    {
+        return $this->hasMany('App\Pemesanan','Id_Pemesanan');
+    }
 }
