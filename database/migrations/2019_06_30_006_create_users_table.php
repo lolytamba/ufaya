@@ -13,7 +13,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('user', function (Blueprint $table) {
             $table->increments('Id_User');
             $table->unsignedInteger('Id_Role');
             $table->string('Nama');
@@ -25,7 +25,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
 
             $table->foreign('Id_Role')->references('Id_Role')->on('role');
-            // $table->foreign('Id_Supplier')->references('Id_Supplier')->on('suppliers');
         });
     }
 
