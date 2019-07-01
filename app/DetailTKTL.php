@@ -16,11 +16,11 @@ class DetailTKTL extends Model
         'Total',
     ];
 
-    public function tkl()
+    public function tktl()
     {
         return $this->belongsTo('App\User','Id_User');
     }
-
+    
     public function pemesanan()
     {
         return $this->belongsTo('App\Pemesanan','Id_Pemesanan');

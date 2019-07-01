@@ -12,7 +12,7 @@ class Role extends Model
     const finance    = 3;
 
     protected $table = 'roles';
-    protected $primaryKey = 'Id_Role';
+    protected $primaryKey = 'Id_Role'; 
     public $timestamp = true;
     protected $fillable = [
         'Role'
