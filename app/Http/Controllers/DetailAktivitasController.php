@@ -25,9 +25,8 @@ class DetailAktivitasController extends RestController
         $overhead = Overhead::find($request->Id_Overhead);
         $aktivitas = Aktivitas::find($request->Id_Aktivitas);
         $detail_aktivitas = DetailAktivitas::create([
-            'Id_Bahan_Baku' => $request->Id_Bahan_Baku,
-            'Id_Pemesanan' => $request->Id_Pemesanan,
-            'Jumlah' => $request->Jumlah,
+            'Id_Overhead' => $request->Id_Overhead,
+            'Id_Aktivitas' => $request->Id_Aktivitas,
             'Total' => 0
         ]);
 
@@ -40,7 +39,7 @@ class DetailAktivitasController extends RestController
         $detail_aktivitas = DetailAktivitas::where('Total','0')->first();
         $aktivitas = Aktivitas::find($detail_aktivitas->Id_Aktivitas);
         $detail_bps = DetailBahanPenolong::where('Id_Detail_Aktivitas',$detail_aktivitas->Id_Detail_Aktivitas)->get();
-        $total = $aktivitas->Harga;
+        $total = $aktivitas->Total;
         foreach($detail_bps as $detail_bp)
         {
             $total += $detail_bp->Total;
@@ -54,7 +53,7 @@ class DetailAktivitasController extends RestController
 
     public function update(Request $request, $id)
     {   
-        $detail_aktivitas = DetailBahanBaku::find($id);
+        $detail_aktivitas = DetailAktivitas::find($id);
 
         if(!is_null($request->Id_Overhead)){
             $detail_aktivitas->Id_Overhead = $request->Id_Overhead;

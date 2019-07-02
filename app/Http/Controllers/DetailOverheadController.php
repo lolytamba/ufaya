@@ -20,6 +20,7 @@ class DetailOverheadController extends RestController
     public function store(Request $request)
     {
         $detail_overhead = DetailOverhead::create([
+            'Id_Overhead' => $request->Id_Overhead,
             'Nama_Detail_Overhead' => $request->Nama_Detail_Overhead,
             'Harga_Detail_Overhead' => $request->Harga_Detail_Overhead,
             'Jumlah' => $request->Jumlah,

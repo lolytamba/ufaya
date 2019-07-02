@@ -50,7 +50,7 @@ Route::get('/detail_aktivitas', 'DetailAktivitasController@index');
 Route::post('/detail_aktivitas/store', 'DetailAktivitasController@store');
 Route::get('/detail_aktivitas/{id}', 'DetailAktivitasController@showbyID');
 Route::patch('/detail_aktivitas/update/{id}', 'DetailAktivitasController@update'); 
-Route::patch('/hitungTotal', 'DetailAktivitasController@update'); 
+Route::patch('/hitungTotal', 'DetailAktivitasController@hitungTotal'); 
 Route::delete('/detail_aktivitas/delete/{id}', 'DetailAktivitasController@destroy');
 
 //Detail Bahan Penolong

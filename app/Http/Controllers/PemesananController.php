@@ -26,7 +26,7 @@ class PemesananController extends RestController
             'Tanggal_Selesai' => $request->Tanggal_Selesai,
             'Lama_Kerja' => $request->Lama_Kerja,
             'Jumlah' => $request->Jumlah,
-            'Total' => $request->Total
+            'Total' => 0,
         ]);
 
         $overhead = Overhead::create([
@@ -37,6 +37,7 @@ class PemesananController extends RestController
         return response()->json([
             'status' => (bool) $pemesanan,
             'data' => $pemesanan,
+            'data1' => $overhead,
             'message' => $pemesanan ? 'Success' : 'Error Pemesanan'
         ]);
     }
