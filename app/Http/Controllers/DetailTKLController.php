@@ -19,17 +19,15 @@ class DetailTKLController extends RestController
 
     public function store(Request $request)
     {
+        $tkl = TKL::where('Id_TKL',$request->Id_TKL)->get();
         $detail_tkl = DetailTKL::create([
             'Id_TKL' => $request->Id_TKL,
             'Id_Pemesanan' => $request->Id_Pemesanan,
-            'Total' => $request->Total
+            'Total' => $tkl->Salary
         ]);
 
-        return response()->json([
-            'status' => (bool) $detail_tkl,
-            'data' => $detail_tkl,
-            'message' => $detail_tkl ? 'Success' : 'Error Detail TKL'
-        ]);
+        $response = $this->generateItem($detail_tkl);
+        return $this->sendResponse($response);
     }
 
     public function update(Request $request, $id)

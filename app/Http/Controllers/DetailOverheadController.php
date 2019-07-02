@@ -23,14 +23,11 @@ class DetailOverheadController extends RestController
             'Nama_Detail_Overhead' => $request->Nama_Detail_Overhead,
             'Harga_Detail_Overhead' => $request->Harga_Detail_Overhead,
             'Jumlah' => $request->Jumlah,
-            'Total' => $request->Total
+            'Total' => $request->Harga_Detail_Overhead * $request->Jumlah
         ]);
 
-        return response()->json([
-            'status' => (bool) $detail_overhead,
-            'data' => $detail_overhead,
-            'message' => $detail_overhead ? 'Success' : 'Error Detail Overhead'
-        ]);
+        $response = $this->generateItem($detail_overhead);
+        return $this->sendResponse($response);
     }
 
     public function update(Request $request, $id)

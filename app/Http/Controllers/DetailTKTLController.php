@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\DetailTKTL;
+use App\User;
 use Illuminate\Http\Request;
 use App\Transformers\DetailTKTLTransformers;
 
 class DetailTKTLController extends RestController
 {
-    protected $transformer=DetailBahanTKTLTransformers::Class;
+    protected $transformer=DetailTKTLTransformers::Class;
 
     public function index()
     {
@@ -19,17 +20,15 @@ class DetailTKTLController extends RestController
 
     public function store(Request $request)
     {
+        $user = User::find($request->Id_User);
         $detail_tktl = DetailTKL::create([
             'Id_User' => $request->Id_User,
             'Id_Pemesanan' => $request->Id_Pemesanan,
-            'Total' => $request->Total
+            'Total' => $user->salary
         ]);
 
-        return response()->json([
-            'status' => (bool) $detail_tkl,
-            'data' => $detail_tkl,
-            'message' => $detail_tkl ? 'Success' : 'Error Detail TKTL'
-        ]);
+        $response = $this->generateItem($detail_tktl);
+        return $this->sendResponse($response);
     }
 
     public function update(Request $request, $id)

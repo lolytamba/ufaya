@@ -19,18 +19,16 @@ class DetailBahanPenolongController extends RestController
 
     public function store(Request $request)
     {
+        $bahan_penolong = BahanPenolong::find($request->Id_Bahan_Penolong);
         $detail_bahan_penolong = DetailBahanPenolong::create([
             'Id_Bahan_Penolong' => $request->Id_Bahan_Penolong,
             'Id_Detail_Aktivitas' => $request->Id_Detail_Aktivitas,
             'Jumlah' => $request->Jumlah,
-            'Total' => $request->Total
+            'Total' => $request->Jumlah * $bahan_penolong->Harga
         ]);
 
-        return response()->json([
-            'status' => (bool) $detail_bahan_penolong,
-            'data' => $detail_bahan_penolong,
-            'message' => $detail_bahan_penolong ? 'Success' : 'Error Detail Bahan Penolong'
-        ]);
+        $response = $this->generateItem($detail_bahan_penolong);
+        return $this->sendResponse($response);
     }
 
     public function update(Request $request, $id)
