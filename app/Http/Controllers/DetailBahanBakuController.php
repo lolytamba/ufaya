@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DetailBahanBaku;
+use App\BahanBaku;
 use Illuminate\Http\Request;
 use App\Transformers\DetailBahanBakuTransformers;
 
@@ -19,11 +20,12 @@ class DetailBahanBakuController extends RestController
 
     public function store(Request $request)
     {
+        $bahan_baku = BahanBaku::find($request->Id_Bahan_Baku);
         $detail_bahan_baku = DetailBahanBaku::create([
             'Id_Bahan_Baku' => $request->Id_Bahan_Baku,
             'Id_Pemesanan' => $request->Id_Pemesanan,
             'Jumlah' => $request->Jumlah,
-            'Total' => $request->Total
+            'Total' => $request->Jumlah*$bahan_baku->Harga,
         ]);
 
         return response()->json([

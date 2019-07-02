@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\DetailAktivitas;
+use App\DetailBahanPenolong;
+use App\Aktivitas;
 use Illuminate\Http\Request;
 use App\Transformers\DetailAktivitasTransformers;
 
@@ -65,5 +67,22 @@ class DetailAktivitasController extends RestController
             'status' => $status,
             'message' => $status ? 'Deleted' : 'Error Delete'
         ]);
+    }
+
+    public function hitungTotal()
+    {
+        $detail_aktivitas = DetailAktivitas::where('Total','0')->first();
+        $aktivitas = Aktivitas::find($detail_aktivitas->Id_Aktivitas);
+        $detail_bps = DetailBahanPenolong::where('Id_Detail_Aktivitas',$detail_aktivitas->Id_Detail_Aktivitas)->get();
+        $total = $aktivitas->Harga;
+        foreach($detail_bps as $detail_bp)
+        {
+            $total += $detail_bp->Total;
+        }
+        $detail_aktivitas->Total = $total;
+        $detail_aktivitas->save();
+        
+        $response=$this->generateItem($detail_aktivitas);
+        return $this->sendResponse($response,201);
     }
 }
