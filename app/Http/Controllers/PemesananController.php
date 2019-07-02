@@ -29,6 +29,11 @@ class PemesananController extends RestController
             'Total' => $request->Total
         ]);
 
+        $overhead = Overhead::create([
+            'Id_Pemesanan' => $pemesanan->Id_Pemesanan,
+            'Total' => 0,
+        ]);
+
         return response()->json([
             'status' => (bool) $pemesanan,
             'data' => $pemesanan,

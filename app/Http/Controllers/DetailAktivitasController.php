@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DetailAktivitas;
 use App\DetailBahanPenolong;
 use App\Aktivitas;
+use App\Overhead;
 use Illuminate\Http\Request;
 use App\Transformers\DetailAktivitasTransformers;
 
@@ -21,18 +22,34 @@ class DetailAktivitasController extends RestController
 
     public function store(Request $request)
     {
+        $overhead = Overhead::find($request->Id_Overhead);
+        $aktivitas = Aktivitas::find($request->Id_Aktivitas);
         $detail_aktivitas = DetailAktivitas::create([
             'Id_Bahan_Baku' => $request->Id_Bahan_Baku,
             'Id_Pemesanan' => $request->Id_Pemesanan,
             'Jumlah' => $request->Jumlah,
-            'Total' => $request->Total
+            'Total' => 0
         ]);
 
-        return response()->json([
-            'status' => (bool) $detail_aktivitas,
-            'data' => $detail_aktivitas,
-            'message' => $detail_aktivitas ? 'Success' : 'Error Detail Aktivitas'
-        ]);
+        $response = $this->generateItem($detail_bahan_baku);
+        return $this->sendResponse($response);
+    }
+
+    public function hitungTotal()
+    {
+        $detail_aktivitas = DetailAktivitas::where('Total','0')->first();
+        $aktivitas = Aktivitas::find($detail_aktivitas->Id_Aktivitas);
+        $detail_bps = DetailBahanPenolong::where('Id_Detail_Aktivitas',$detail_aktivitas->Id_Detail_Aktivitas)->get();
+        $total = $aktivitas->Harga;
+        foreach($detail_bps as $detail_bp)
+        {
+            $total += $detail_bp->Total;
+        }
+        $detail_aktivitas->Total = $total;
+        $detail_aktivitas->save();
+        
+        $response=$this->generateItem($detail_aktivitas);
+        return $this->sendResponse($response,201);
     }
 
     public function update(Request $request, $id)
@@ -67,22 +84,5 @@ class DetailAktivitasController extends RestController
             'status' => $status,
             'message' => $status ? 'Deleted' : 'Error Delete'
         ]);
-    }
-
-    public function hitungTotal()
-    {
-        $detail_aktivitas = DetailAktivitas::where('Total','0')->first();
-        $aktivitas = Aktivitas::find($detail_aktivitas->Id_Aktivitas);
-        $detail_bps = DetailBahanPenolong::where('Id_Detail_Aktivitas',$detail_aktivitas->Id_Detail_Aktivitas)->get();
-        $total = $aktivitas->Harga;
-        foreach($detail_bps as $detail_bp)
-        {
-            $total += $detail_bp->Total;
-        }
-        $detail_aktivitas->Total = $total;
-        $detail_aktivitas->save();
-        
-        $response=$this->generateItem($detail_aktivitas);
-        return $this->sendResponse($response,201);
     }
 }
