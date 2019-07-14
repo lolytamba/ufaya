@@ -57,9 +57,18 @@ class DetailBahanPenolongController extends RestController
         }
         $new_BP = BahanPenolong::find($request->Id_Bahan_Penolong);
         $new_price = $new_BP->Harga;
-        
+
         $detail_bahan_penolong->Total -= $old;
         $detail_bahan_penolong->Total += $new_price*$request->Jumlah;
+
+        $detail_aktifitas = DetailAktifitas::find($detail_bahan_penolong->Id_Detail_Aktifitas);
+        $overhead = Overhead::find($detail_aktifitas->Id_Overhead);
+
+        $overhead->Total -= $old;
+        $overhead->Total += $new_price*$request->Jumlah;
+        
+        $detail_bahan_penolong->save();
+        $overhead->save();
 
         $success = $detail_bahan_penolong->save();
         if(!$success){
