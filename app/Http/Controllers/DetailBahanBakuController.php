@@ -49,7 +49,7 @@ class DetailBahanBakuController extends RestController
         $success = $detail_bahan_baku->save();
         if(!$success){
             return response()->json('Error Update',500);
-        }else   
+        }else
             return response()->json('Success',200);
     }
 

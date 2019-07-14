@@ -34,13 +34,25 @@ class DetailBahanPenolongController extends RestController
     public function update(Request $request, $id)
     {   
         $detail_bahan_penolong = DetailBahanPenolong::find($id);
+        $old_BP = BahanPenolong::find($detail_bahan_penolong->Id_Bahan_Penolong);
+        $old_qty = $detail_bahan_penolong->Jumlah;
+        $old_price = $old_BP->Harga;
+        $old = $old_qty*$old_price;
 
         if(!is_null($request->Id_Bahan_Penolong)){
             $detail_bahan_penolong->Id_Bahan_Penolong = $request->Id_Bahan_Penolong;
         }
+        if(!is_null($request->Jumlah)){
+            $detail_bahan_penolong->Jumlah = $request->Jumlah;
+        }
         if(!is_null($request->Id_Detail_Aktivitas)){
             $detail_bahan_penolong->Id_Detail_Aktivitas = $request->Id_Detail_Aktivitas;
         }
+        $new_BP = BahanPenolong::find($request->Id_Bahan_Penolong);
+        $new_price = $new_BP->Harga;
+        
+        $detail_bahan_penolong->Total -= $old;
+        $detail_bahan_penolong->Total += $new_price*$request->Jumlah;
 
         $success = $detail_bahan_penolong->save();
         if(!$success){
