@@ -27,6 +27,8 @@ class DetailOverheadController extends RestController
             'Total' => $request->Harga_Detail_Overhead * $request->Jumlah
         ]);
 
+        $overhead->Total += $detail_overhead->Total;
+        $overhead->save();
         $response = $this->generateItem($detail_overhead);
         return $this->sendResponse($response);
     }

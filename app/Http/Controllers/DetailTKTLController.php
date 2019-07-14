@@ -21,10 +21,10 @@ class DetailTKTLController extends RestController
     public function store(Request $request)
     {
         $user = User::find($request->Id_User);
-        $detail_tktl = DetailTKL::create([
+        $detail_tktl = DetailTKTL::create([
             'Id_User' => $request->Id_User,
             'Id_Pemesanan' => $request->Id_Pemesanan,
-            'Total' => $user->salary
+            'Total' => $user->Salary
         ]);
 
         $response = $this->generateItem($detail_tktl);

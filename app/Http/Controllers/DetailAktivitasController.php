@@ -27,8 +27,10 @@ class DetailAktivitasController extends RestController
         $detail_aktivitas = DetailAktivitas::create([
             'Id_Overhead' => $request->Id_Overhead,
             'Id_Aktivitas' => $request->Id_Aktivitas,
-            'Total' => 0
+            'Total' => $aktivitas->Total
         ]);
+        $overhead->Total += $detail_aktivitas->Total;
+        $overhead->save();
 
         $response = $this->generateItem($detail_bahan_baku);
         return $this->sendResponse($response);
