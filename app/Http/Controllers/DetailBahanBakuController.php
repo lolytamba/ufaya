@@ -37,13 +37,13 @@ class DetailBahanBakuController extends RestController
         $detail_bahan_baku = DetailBahanBaku::find($id);
 
         if(!is_null($request->Id_Bahan_Baku)){
-            $cabang->Id_Bahan_Baku = $request->Id_Bahan_Baku;
+            $detail_bahan_baku->Id_Bahan_Baku = $request->Id_Bahan_Baku;
         }
         if(!is_null($request->Id_Pemesanan)){
-            $cabang->Id_Pemesanan = $request->Id_Pemesanan;
+            $detail_bahan_baku->Id_Pemesanan = $request->Id_Pemesanan;
         }
         if(!is_null($request->Jumlah)){
-            $cabang->Jumlah = $request->Jumlah;
+            $detail_bahan_baku->Jumlah = $request->Jumlah;
         }
 
         $success = $detail_bahan_baku->save();

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\DetailTKL;
+use App\TKL;
 use Illuminate\Http\Request;
 use App\Transformers\DetailTKLTransformers;
 
 class DetailTKLController extends RestController
 {
-    protected $transformer=DetailBahanTKLTransformers::Class;
+    protected $transformer=DetailTKLTransformers::Class;
 
     public function index()
     {
@@ -19,7 +20,7 @@ class DetailTKLController extends RestController
 
     public function store(Request $request)
     {
-        $tkl = TKL::where('Id_TKL',$request->Id_TKL)->get();
+        $tkl = TKL::find($request->Id_TKL);
         $detail_tkl = DetailTKL::create([
             'Id_TKL' => $request->Id_TKL,
             'Id_Pemesanan' => $request->Id_Pemesanan,

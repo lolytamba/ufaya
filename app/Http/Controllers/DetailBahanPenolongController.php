@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\DetailBahanPenolong;
+use App\DetailAktivitas;
+use App\BahanPenolong;
 use Illuminate\Http\Request;
 use App\Transformers\DetailBahanPenolongTransformers;
 
@@ -19,6 +21,7 @@ class DetailBahanPenolongController extends RestController
 
     public function store(Request $request)
     {
+        $detail_aktivitas = DetailAktivitas::find($request->Id_Detail_Aktivitas);
         $bahan_penolong = BahanPenolong::find($request->Id_Bahan_Penolong);
         $detail_bahan_penolong = DetailBahanPenolong::create([
             'Id_Bahan_Penolong' => $request->Id_Bahan_Penolong,
@@ -26,6 +29,10 @@ class DetailBahanPenolongController extends RestController
             'Jumlah' => $request->Jumlah,
             'Total' => $request->Jumlah * $bahan_penolong->Harga
         ]);
+
+        $detail_aktivitas->Total += $detail_bahan_penolong->Total;
+        $overhead->Total += $detail_bahan_penolong->Total;
+        $detail_aktivitas->save();
 
         $response = $this->generateItem($detail_bahan_penolong);
         return $this->sendResponse($response);
